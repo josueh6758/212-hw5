@@ -1,6 +1,6 @@
 #include<iostream>  
 using namespace std;
-//comment testing 1.0
+//comment testing 1.0 yukkee
 
 
 template<class T>
@@ -143,5 +143,5 @@ count++;
 
 
    int main(){
-   
+       cout << "ferff" << endl;
    }
