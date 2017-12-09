@@ -3,6 +3,7 @@ using namespace std;
 //comment testing 1.0(j.h)
 
 
+
 template<class T>
    struct Node {
      Node() : m_next(this), m_prev(this) {}    
@@ -143,5 +144,5 @@ count++;
 
 
    int main(){
-   
+       cout << "ferff" << endl;
    }
