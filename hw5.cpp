@@ -102,7 +102,7 @@ count++;
    template<class T>
    SortedBag<T> operator+(const SortedBag<T>&, const SortedBag<T>&);
 
-//BEG OF CODE
+//Beggining OF CODE
 
 
    template<class T>
