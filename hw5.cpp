@@ -1,6 +1,6 @@
 #include<iostream>  
 using namespace std;
-
+//comment testing 1.0
 
 
 template<class T>
@@ -23,7 +23,7 @@ template<class T>
      //we need two for next and prev	
      const Node<T>* get_prev_link( ) const { return m_prev;}
      Node<T>* get_prev_link( )             { return m_prev; }
-
+    
    };
 
 
