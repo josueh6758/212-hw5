@@ -1,6 +1,7 @@
-#include<iostream>
-#include <assert.h>
 
+#include<iostream> 
+#include "student.h"
+#include <assert.h>
 
 using namespace std;
 //comment testing 1.0(j.h)
@@ -21,7 +22,7 @@ template<class T>
      void set_data(const T& new_data) { m_val = new_data; }
      void set_next_link(Node<T>* new_link)             { m_next = new_link; }
      void set_prev_link(Node<T>* new_link)             { m_prev = new_link; }
-     T get_data( ) const { return m_val;} 	
+     T get_data( ) { return m_val;} 	
      const Node<T>* get_next_link( ) const { return m_next;}
      Node<T>* get_next_link( )             { return m_next; }
      //we need two for next and prev	
@@ -39,7 +40,7 @@ void list_insert(Node<T>* left_ptr, const T& entry){
 //             this is because we are getting the right node through the left node's link!
 Node<T>* right_ptr = left_ptr->get_next_link(); 
 Node<T>* n_node;
-n_node = new Node<T>(left_ptr, entry, right_ptr);
+n_node = new Node<T>(entry, right_ptr,left_ptr);
 left_ptr->set_next_link(n_node);
 right_ptr->set_prev_link(n_node);
 }
@@ -76,8 +77,9 @@ count++;
    public:
      SortedBag() : m_data(0), m_size(0), m_asc(true), m_curr(0) {}
      SortedBag(const SortedBag&);
-     void operator =(SortedBag&);
-     ~SortedBag();
+
+     void operator =(const SortedBag&);
+     //~SortedBag();
 
      bool erase_one(const T&);
      long erase(const T&);
@@ -86,15 +88,17 @@ count++;
      long size() const { return m_size; }
      long count(const T&) const;
      // SIMPLE ITERATOR 
-     void begin(const bool ascending =true);
-     bool end() const;
+     void begin(){m_data=head_ptr;}
+     bool end()const {return(m_data->get_next_link()==head_ptr);} 
      void operator++(){m_data = m_data->get_next_link();}
      void operator--(){m_data = m_data->get_prev_link();}
      friend bool operator<(const Node<T> node1,const Node<T> node2){
-		if(node1.get_data <node2.get_data()) return true;
-			return false;}
+	     /*Notice!!!! i am not using pointers but actual nodes so use .get rather than
+	        ->get */
+	     	cout<<"in the comparison module i am comparing "<< node1.get_data().num_ssn() << "And "<<node2.get_data().num_ssn()<<endl<<endl;
+		if(node1.get_data().num_ssn() <node2.get_data().num_ssn);}
      						
-     T& get();
+     T get(){return m_data->get_data();};
    private:
      Node<T>* head_ptr; //will always point to the head
      Node<T>* m_data; // pointer to ring structure. This will be my "cursor"
@@ -107,7 +111,12 @@ count++;
    SortedBag<T> operator+(const SortedBag<T>&, const SortedBag<T>&);
 
 //Beggining OF CODE
-
+  template<class T>
+   SortedBag<T>::SortedBag(const SortedBag&){
+  //create a linked list copy of a linked list(COPY CONSTRUCTOR) 
+   
+   
+   }
 
    template<class T>
    void SortedBag<T>::insert(const T& entry){
@@ -116,7 +125,10 @@ count++;
 		m_data = new Node<T>();
 		m_data-> set_data(entry);
 		head_ptr = m_data;//the head is auto the new node
-		++m_size;	
+		++m_size;
+		cout<<"inserted at the Head!!"<<endl;
+		
+		return;	
 	}
 	Node<T>* insert_node= new Node<T>();
 	insert_node->set_data(entry);
@@ -124,7 +136,9 @@ count++;
 	/*******************************************************/
 	//now check if we need to update the head.
 	//if entry will become new head(m_data) adjust the head_pt
+	cout<<"Student: "<<insert_node->get_data().num_ssn()<<endl;
 	if(insert_node<head_ptr){
+		cout<<"New Head & its student: "<<insert_node->get_data().num_ssn();
 		head_ptr = insert_node;// the head ptr will now point to the new entry
 	}
 	m_data=head_ptr; //set cursor to head
@@ -132,13 +146,15 @@ count++;
 		if(m_data>insert_node){
 			list_insert(m_data->get_prev_link(),entry);
 			delete insert_node;
+			++m_size;
 			return;
 		} 
-		++m_data;
+		m_data=m_data->get_next_link();
 	}while(m_data!=head_ptr);
 	//if loop has finished that means entry is the last of the list
 	list_insert(head_ptr->get_prev_link(),entry);
 		delete insert_node;
+		++m_size;
 		return;
 	
 }
@@ -178,7 +194,7 @@ bool operator ==(SortedBag<T>& bag1,SortedBag<T>& bag2 )
 }
 
 template<class T>
-void SortedBag<T>::operator =(SortedBag<T>& bag)
+void SortedBag<T>::operator =(const SortedBag<T>& bag)
 {
     SortedBag<T>x = bag;
 }
@@ -241,5 +257,23 @@ long SortedBag<T>::count(const T& t) const
 
 
    int main(){
-       cout << "ferff" << endl;
+       srand(time(NULL));
+
+	SortedBag<Student> linked_list;
+		for(int i = 0; i<4;++i){
+		Student entry;
+		cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
+		linked_list.insert(entry);	
+		}
+		int count=0;
+		linked_list.begin();
+		for(int a=0;a<linked_list.size();++a){
+			Student sample;
+			 sample= linked_list.get();
+			cout<<sample.string_ssn()<<endl;	
+			++linked_list;
+			++count;
+		}
+
+
    }
