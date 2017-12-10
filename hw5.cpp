@@ -128,9 +128,9 @@ count++;
 	//node with new entry has been created but has no links
 	/*******************************************************/
 	//now check if we need to update the head.
-	//if entry will become new head(m_data) adjust the head_pt
+	//if entry is smaller it will become new head(m_data) adjust the head_pt
 	if(entry.num_ssn()<head_ptr->get_data().num_ssn()){
-		cout<<"New Head & its student: "<<entry.num_ssn()<<endl;
+	//	cout<<"New Head & its student: "<<entry.num_ssn()<<endl;
 		// the head ptr will now point to the new entry
 		list_insert(head_ptr->get_prev_link(),entry);
 		head_ptr = head_ptr->get_prev_link();
@@ -264,11 +264,14 @@ long SortedBag<T>::count(const T& t) const
        srand(time(NULL));
 
 	SortedBag<Student> linked_list;
-		for(int i = 0; i<7;++i){
+		for(int i = 0; i<200;++i){
 		Student entry;
-		cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
+		//cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
 		linked_list.insert(entry);	
 		}
+		Student entry2 ;
+		linked_list.insert(entry2);
+		cout <<"New student: "<< entry2.string_ssn() << endl;
 		int count=0;
 		linked_list.begin();
 		for(int a=0;a<linked_list.size();++a){
@@ -278,6 +281,6 @@ long SortedBag<T>::count(const T& t) const
 			++linked_list;
 			++count;
 		}
-
+	
 
    }
