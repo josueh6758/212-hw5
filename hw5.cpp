@@ -129,17 +129,18 @@ count++;
 	/*******************************************************/
 	//now check if we need to update the head.
 	//if entry will become new head(m_data) adjust the head_pt
-	cout<<"Student: "<<entry.num_ssn()<<endl;
 	if(entry.num_ssn()<head_ptr->get_data().num_ssn()){
 		cout<<"New Head & its student: "<<entry.num_ssn()<<endl;
 		// the head ptr will now point to the new entry
 		list_insert(head_ptr->get_prev_link(),entry);
 		head_ptr = head_ptr->get_prev_link();
+		++m_size;
+		return;
 	}
 
 	m_data=head_ptr; //set cursor to head
 	do{	
-		if(m_data->get_data().num_ssn()<entry.num_ssn()){
+		if(m_data->get_data().num_ssn()>entry.num_ssn()){
 			list_insert(m_data->get_prev_link(),entry);
 			++m_size;
 			return;
@@ -147,6 +148,7 @@ count++;
 		m_data=m_data->get_next_link();
 	}while(m_data!=head_ptr);
 	//if loop has finished that means entry is the last of the list
+	cout<<"New tail & its student: "<<entry.num_ssn()<<endl;
 	list_insert(head_ptr->get_prev_link(),entry);
 		++m_size;
 		return;
