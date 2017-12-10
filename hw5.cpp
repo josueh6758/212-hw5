@@ -22,7 +22,7 @@ template<class T>
      void set_data(const T& new_data) { m_val = new_data; }
      void set_next_link(Node<T>* new_link)             { m_next = new_link; }
      void set_prev_link(Node<T>* new_link)             { m_prev = new_link; }
-     T get_data( ) { return m_val;} 	
+     T get_data() { return m_val;}
      const Node<T>* get_next_link( ) const { return m_next;}
      Node<T>* get_next_link( )             { return m_next; }
      //we need two for next and prev	
@@ -85,6 +85,7 @@ count++;
      long erase(const T&);
      void insert(const T&);
      void operator +=(const SortedBag&);
+     friend bool operator ==(SortedBag&, SortedBag&);
      long size() const { return m_size; }
      long count(const T&) const;
      // SIMPLE ITERATOR 
@@ -189,7 +190,14 @@ size_t list_length(const typename SortedBag<T>::Node* head_ptr)
 template<class T>
 bool operator ==(SortedBag<T>& bag1,SortedBag<T>& bag2 )
 {
-    return (bag1 == bag2);
+    for(int i = 0; i<bag1.size(); i++) {
+        if(bag1.m_data->get_data().num_ssn() != bag2.m_data->get_data().num_ssn()) {
+            return false;
+        }
+        ++bag1;
+        ++bag2;
+    }
+    return true;
     
 }
 
@@ -253,27 +261,29 @@ long SortedBag<T>::count(const T& t) const
 }
 
 
-
-
-
    int main(){
        srand(time(NULL));
-
-	SortedBag<Student> linked_list;
+    SortedBag<Student>L3;
+	SortedBag<Student>L1;
 		for(int i = 0; i<4;++i){
 		Student entry;
-		cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
-		linked_list.insert(entry);	
+		L1.insert(entry);
 		}
 		int count=0;
-		linked_list.begin();
-		for(int a=0;a<linked_list.size();++a){
+		L1.end();
+       
+		for(int a=L1.size(); a<L1.size();--a){
 			Student sample;
-			 sample= linked_list.get();
-			cout<<sample.string_ssn()<<endl;	
-			++linked_list;
-			++count;
+            L3.insert(sample);
+//            sample= linked_list.get();
+//            cout<<sample.string_ssn()<<endl;
+			//--L1.size();
+			//++count;
 		}
+       bool equal = (L1==L3);
+       cout << equal << endl;
+       
+       return 0;
 
 
    }
