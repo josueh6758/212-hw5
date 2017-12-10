@@ -1,4 +1,7 @@
-#include<iostream>  
+#include<iostream>
+#include <assert.h>
+
+
 using namespace std;
 //comment testing 1.0(j.h)
 
@@ -73,7 +76,7 @@ count++;
    public:
      SortedBag() : m_data(0), m_size(0), m_asc(true), m_curr(0) {}
      SortedBag(const SortedBag&);
-     void operator =(const SortedBag&);
+     void operator =(SortedBag&);
      ~SortedBag();
 
      bool erase_one(const T&);
@@ -139,6 +142,100 @@ count++;
 		return;
 	
 }
+
+//----------//
+template<class T>
+Node<T>* list_search(Node<T>* head_ptr, const typename Node<T>::value_type& target)
+{
+    Node<T> *cursor;
+    
+    for (cursor = head_ptr; cursor != NULL; cursor = cursor->link( ))
+        if (target == cursor->data( ))
+            return cursor;
+    return NULL;
+}
+
+
+template<class T>
+size_t list_length(const typename SortedBag<T>::Node* head_ptr)
+{
+    const typename SortedBag<T>::Node *cursor;
+    size_t answer;
+    
+    answer = 0;
+    for (cursor = head_ptr; cursor != NULL; cursor = cursor->link( ))
+        ++answer;
+    
+    return answer;
+}
+
+
+template<class T>
+bool operator ==(SortedBag<T>& bag1,SortedBag<T>& bag2 )
+{
+    return (bag1 == bag2);
+    
+}
+
+template<class T>
+void SortedBag<T>::operator =(SortedBag<T>& bag)
+{
+    SortedBag<T>x = bag;
+}
+
+
+template<class T>
+bool SortedBag<T>::erase_one(const T& target)
+{
+    //make a node type pointer to target
+    Node<T> *target_ptr;
+    target_ptr = list_search(head_ptr, target);
+    if (target_ptr == NULL)
+        return false; // target isn't in the bag, so no work to do
+    target_ptr->set_data( head_ptr->data( ) );
+    list_head_remove(head_ptr);
+    --m_size;
+    return true;
+    
+}
+template<class T>
+long SortedBag<T>::erase(const T& target)
+{
+    int answer = 0;
+    //make a node type pointer to target
+    Node<T> *target_ptr;
+    target_ptr = list_search(head_ptr, target);
+    while (target_ptr != NULL)
+    {
+        // Each time that target_ptr is not NULL, we have another occurrence
+        // of target. We remove this target using the same technique that
+        // was used in erase_one.
+        target_ptr->set_data( head_ptr->data( ) );
+        target_ptr = target_ptr->link( );
+        target_ptr = list_search(target_ptr, target);
+        list_head_remove(head_ptr);
+        --m_size;
+        ++answer;
+    }
+    return answer;
+    
+}
+template<class T>
+long SortedBag<T>::count(const T& t) const
+{
+    int answer;
+    const Node<T> *cursor;
+    answer = 0;
+    cursor = head_ptr;
+    
+    do {
+        cursor = cursor->link( );
+        ++answer;
+    }
+    while(cursor != head_ptr);
+    return answer;
+}
+
 
 
 
