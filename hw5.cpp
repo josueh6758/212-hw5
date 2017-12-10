@@ -92,12 +92,7 @@ count++;
      bool end()const {return(m_data->get_next_link()==head_ptr);} 
      void operator++(){m_data = m_data->get_next_link();}
      void operator--(){m_data = m_data->get_prev_link();}
-     friend bool operator<(const Node<T> node1,const Node<T> node2){
-	     /*Notice!!!! i am not using pointers but actual nodes so use .get rather than
-	        ->get */
-	     	cout<<"in the comparison module i am comparing "<< node1.get_data().num_ssn() << "And "<<node2.get_data().num_ssn()<<endl<<endl;
-		if(node1.get_data().num_ssn() <node2.get_data().num_ssn);}
-     						
+//     friend bool operator<(const Node<T> &,const Node<T> &);     						
      T get(){return m_data->get_data();};
    private:
      Node<T>* head_ptr; //will always point to the head
@@ -130,22 +125,22 @@ count++;
 		
 		return;	
 	}
-	Node<T>* insert_node= new Node<T>();
-	insert_node->set_data(entry);
 	//node with new entry has been created but has no links
 	/*******************************************************/
 	//now check if we need to update the head.
 	//if entry will become new head(m_data) adjust the head_pt
-	cout<<"Student: "<<insert_node->get_data().num_ssn()<<endl;
-	if(insert_node<head_ptr){
-		cout<<"New Head & its student: "<<insert_node->get_data().num_ssn();
-		head_ptr = insert_node;// the head ptr will now point to the new entry
+	cout<<"Student: "<<entry.num_ssn()<<endl;
+	if(entry.num_ssn()<head_ptr->get_data().num_ssn()){
+		cout<<"New Head & its student: "<<entry.num_ssn()<<endl;
+		// the head ptr will now point to the new entry
+		list_insert(head_ptr->get_prev_link(),entry);
+		head_ptr = head_ptr->get_prev_link();
 	}
+
 	m_data=head_ptr; //set cursor to head
 	do{	
-		if(m_data>insert_node){
+		if(m_data->get_data().num_ssn()<entry.num_ssn()){
 			list_insert(m_data->get_prev_link(),entry);
-			delete insert_node;
 			++m_size;
 			return;
 		} 
@@ -153,7 +148,6 @@ count++;
 	}while(m_data!=head_ptr);
 	//if loop has finished that means entry is the last of the list
 	list_insert(head_ptr->get_prev_link(),entry);
-		delete insert_node;
 		++m_size;
 		return;
 	
@@ -199,6 +193,14 @@ void SortedBag<T>::operator =(const SortedBag<T>& bag)
     SortedBag<T>x = bag;
 }
 
+/*template<class T>
+bool operator <(Node<T>& node1, Node<T>& node2){
+Notice!!!! i am not using pointers but actual nodes so use .get rather than
+	        ->get *
+	     	cout<<"in the comparison module i am comparing "<< node1.get_data().num_ssn() << "And "<<node2.get_data().num_ssn()<<endl<<endl;
+		return(node1.get_data().num_ssn() <node2.get_data().num_ssn);}
+
+*/
 
 template<class T>
 bool SortedBag<T>::erase_one(const T& target)
@@ -260,7 +262,7 @@ long SortedBag<T>::count(const T& t) const
        srand(time(NULL));
 
 	SortedBag<Student> linked_list;
-		for(int i = 0; i<4;++i){
+		for(int i = 0; i<7;++i){
 		Student entry;
 		cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
 		linked_list.insert(entry);	
