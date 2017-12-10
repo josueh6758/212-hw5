@@ -121,7 +121,7 @@ count++;
 		m_data-> set_data(entry);
 		head_ptr = m_data;//the head is auto the new node
 		++m_size;
-		cout<<"inserted at the Head!!"<<endl;
+		//cout<<"inserted at the Head!!"<<endl;
 		
 		return;	
 	}
@@ -148,7 +148,7 @@ count++;
 		m_data=m_data->get_next_link();
 	}while(m_data!=head_ptr);
 	//if loop has finished that means entry is the last of the list
-	cout<<"New tail & its student: "<<entry.num_ssn()<<endl;
+	//cout<<"New tail & its student: "<<entry.num_ssn()<<endl;
 	list_insert(head_ptr->get_prev_link(),entry);
 		++m_size;
 		return;
@@ -269,18 +269,29 @@ long SortedBag<T>::count(const T& t) const
 		//cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
 		linked_list.insert(entry);	
 		}
-		Student entry2 ;
-		linked_list.insert(entry2);
-		cout <<"New student: "<< entry2.string_ssn() << endl;
-		int count=0;
-		linked_list.begin();
-		for(int a=0;a<linked_list.size();++a){
-			Student sample;
-			 sample= linked_list.get();
-			cout<<sample.string_ssn()<<endl;	
-			++linked_list;
-			++count;
-		}
 	
+	SortedBag<Student>   list_2;
+	linked_list.begin();
+	for(int i=0; i<linked_list.size();i++){
+		list_2.insert(linked_list.get());
+		--linked_list;
+	}
+	
+	linked_list.begin();
+	list_2.begin();
+	cout<<"      L1                L2\n";
+	for(int x=0;x<linked_list.size();++x){
+	Student l1,l2;
+	l1=linked_list.get(); 
+	l2=list_2.get();
+
+	cout<<x+1<<": "<<l1.string_ssn()<< "| "<<l2.string_ssn()<<endl;
+	++linked_list;
+	++list_2;	
+	
+	}
+
+
+
 
    }
