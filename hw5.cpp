@@ -90,7 +90,8 @@ count++;
      long count(const T&) const;
      // SIMPLE ITERATOR 
      void begin(){m_data=head_ptr;}
-     bool end()const {return(m_data->get_next_link()==head_ptr);} 
+     bool end()const {return(m_data->get_next_link()==head_ptr);}
+     //bag only points to one object in the linked list
      void operator++(){m_data = m_data->get_next_link();}
      void operator--(){m_data = m_data->get_prev_link();}
      friend bool operator<(const Node<T> node1,const Node<T> node2){
@@ -98,7 +99,7 @@ count++;
 	        ->get */
 	     	cout<<"in the comparison module i am comparing "<< node1.get_data().num_ssn() << "And "<<node2.get_data().num_ssn()<<endl<<endl;
 		if(node1.get_data().num_ssn() <node2.get_data().num_ssn);}
-     						
+        //pointer that returns a student
      T get(){return m_data->get_data();};
    private:
      Node<T>* head_ptr; //will always point to the head
@@ -174,16 +175,17 @@ Node<T>* list_search(Node<T>* head_ptr, const typename Node<T>::value_type& targ
 
 
 template<class T>
-size_t list_length(const typename SortedBag<T>::Node* head_ptr)
+size_t list_length(const Node<T>* head_ptr)
 {
-    const typename SortedBag<T>::Node *cursor;
-    size_t answer;
+    const Node<T> *cursor;
+    int answer = 0;
+    cursor = head_ptr;
+    do{
+        cursor = cursor->get_next_link()
+        answer++;
+    }while(cursor->get_next_link() != head_ptr;)
     
-    answer = 0;
-    for (cursor = head_ptr; cursor != NULL; cursor = cursor->link( ))
-        ++answer;
-    
-    return answer;
+    return answer+1;
 }
 
 
