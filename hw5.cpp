@@ -369,6 +369,22 @@ Notice!!!! i am not using pointers but actual nodes so use .get rather than
            }
        }
        
+       for(int i=0; i<list_2.size(); i++){
+           linked_list.erase(++linked_list);
+           //check if size of list is 0
+           if(linked_list.size() == 0) {
+           //Alt method but has errors because of data types:
+           //check if the data pointed by head pointer is null
+           //if(linked_list.beginPointer()->get_data == NULL) {
+               cout << "list empty" << endl;
+           } else {
+               //what was not removed in linked_list
+               cout<<"empty linked_list from list_2: "<<linked_list.get().string_ssn()<<endl;
+           }
+           
+       }
+       
+       
        
 
 
