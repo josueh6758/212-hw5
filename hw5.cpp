@@ -22,7 +22,7 @@ template<class T>
      void set_data(const T& new_data) { m_val = new_data; }
      void set_next_link(Node<T>* new_link)             { m_next = new_link; }
      void set_prev_link(Node<T>* new_link)             { m_prev = new_link; }
-     T get_data( ) { return m_val;} 	
+     T& get_data( ) { return m_val;} 	
      const Node<T>* get_next_link( ) const { return m_next;}
      Node<T>* get_next_link( )             { return m_next; }
      //we need two for next and prev	
@@ -93,7 +93,7 @@ count++;
      void operator++(){m_data = m_data->get_next_link();}
      void operator--(){m_data = m_data->get_prev_link();}
 //     friend bool operator<(const Node<T> &,const Node<T> &);     						
-     T get(){return m_data->get_data();};
+     T& get(){return m_data->get_data();};
    private:
      Node<T>* head_ptr; //will always point to the head
      Node<T>* m_data; // pointer to ring structure. This will be my "cursor"
@@ -121,16 +121,16 @@ count++;
 		m_data-> set_data(entry);
 		head_ptr = m_data;//the head is auto the new node
 		++m_size;
-		cout<<"inserted at the Head!!"<<endl;
+		//cout<<"inserted at the Head!!"<<endl;
 		
 		return;	
 	}
 	//node with new entry has been created but has no links
 	/*******************************************************/
 	//now check if we need to update the head.
-	//if entry will become new head(m_data) adjust the head_pt
+	//if entry is smaller it will become new head(m_data) adjust the head_pt
 	if(entry.num_ssn()<head_ptr->get_data().num_ssn()){
-		cout<<"New Head & its student: "<<entry.num_ssn()<<endl;
+	//	cout<<"New Head & its student: "<<entry.num_ssn()<<endl;
 		// the head ptr will now point to the new entry
 		list_insert(head_ptr->get_prev_link(),entry);
 		head_ptr = head_ptr->get_prev_link();
@@ -148,7 +148,7 @@ count++;
 		m_data=m_data->get_next_link();
 	}while(m_data!=head_ptr);
 	//if loop has finished that means entry is the last of the list
-	cout<<"New tail & its student: "<<entry.num_ssn()<<endl;
+	//cout<<"New tail & its student: "<<entry.num_ssn()<<endl;
 	list_insert(head_ptr->get_prev_link(),entry);
 		++m_size;
 		return;
@@ -264,20 +264,34 @@ long SortedBag<T>::count(const T& t) const
        srand(time(NULL));
 
 	SortedBag<Student> linked_list;
-		for(int i = 0; i<7;++i){
+		for(int i = 0; i<200;++i){
 		Student entry;
-		cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
+		//cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
 		linked_list.insert(entry);	
 		}
-		int count=0;
-		linked_list.begin();
-		for(int a=0;a<linked_list.size();++a){
-			Student sample;
-			 sample= linked_list.get();
-			cout<<sample.string_ssn()<<endl;	
-			++linked_list;
-			++count;
-		}
+	
+	SortedBag<Student>   list_2;
+	linked_list.begin();
+	for(int i=0; i<linked_list.size();i++){
+		list_2.insert(linked_list.get());
+		--linked_list;
+	}
+	
+	linked_list.begin();
+	list_2.begin();
+	cout<<"      L1                L2\n";
+	for(int x=0;x<linked_list.size();++x){
+	Student l1,l2;
+	l1=linked_list.get(); 
+	l2=list_2.get();
+
+	cout<<x+1<<": "<<l1.string_ssn()<< "| "<<l2.string_ssn()<<endl;
+	++linked_list;
+	++list_2;	
+	
+	}
+
+
 
 
    }
