@@ -22,7 +22,7 @@ template<class T>
      void set_data(const T& new_data) { m_val = new_data; }
      void set_next_link(Node<T>* new_link)             { m_next = new_link; }
      void set_prev_link(Node<T>* new_link)             { m_prev = new_link; }
-     T get_data( ) { return m_val;} 	
+     T& get_data( ) { return m_val;} 	
      const Node<T>* get_next_link( ) const { return m_next;}
      Node<T>* get_next_link( )             { return m_next; }
      //we need two for next and prev	
@@ -93,7 +93,7 @@ count++;
      void operator++(){m_data = m_data->get_next_link();}
      void operator--(){m_data = m_data->get_prev_link();}
 //     friend bool operator<(const Node<T> &,const Node<T> &);     						
-     T get(){return m_data->get_data();};
+     T& get(){return m_data->get_data();};
    private:
      Node<T>* head_ptr; //will always point to the head
      Node<T>* m_data; // pointer to ring structure. This will be my "cursor"
