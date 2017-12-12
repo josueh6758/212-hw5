@@ -1,100 +1,89 @@
 
-#include<iostream> 
+#include<iostream>
 #include "student.h"
 #include <assert.h>
 
 using namespace std;
-//comment testing 1.0(j.h)
-
 
 
 template<class T>
-   struct Node {
-     Node() : m_next(this), m_prev(this) {}    
-     Node(const T& val, Node<T>* n =0, Node<T>* p =0): m_val(val)
-      { m_next = n? n : this; m_prev = p? p : this; }
-      bool is_singleton() const { m_next == this && m_prev == this; }
-     T        m_val; 
-     Node<T>* m_next; // pointer to successor element. 
-     Node<T>* m_prev; // pointer to predecessor element.
-     //
 
-     void set_data(const T& new_data) { m_val = new_data; }
-     void set_next_link(Node<T>* new_link)             { m_next = new_link; }
-     void set_prev_link(Node<T>* new_link)             { m_prev = new_link; }
-     T& get_data( ) { return m_val;} 	
-     const Node<T>* get_next_link( ) const { return m_next;}
-     Node<T>* get_next_link( )             { return m_next; }
-     //we need two for next and prev	
-     const Node<T>* get_prev_link( ) const { return m_prev;}
-     Node<T>* get_prev_link( )             { return m_prev; }
+struct Node {
+    Node() : m_next(this), m_prev(this) {}
+    Node(const T& val, Node<T>* n =0, Node<T>* p =0): m_val(val)
+    { m_next = n? n : this; m_prev = p? p : this; }
+    bool is_singleton() const { m_next == this && m_prev == this; }
+    T        m_val;
+    Node<T>* m_next; // pointer to successor element.
+    Node<T>* m_prev; // pointer to predecessor element.
+    void set_data(const T& new_data) { m_val = new_data; }
+    void set_next_link(Node<T>* new_link)             { m_next = new_link; }
+    void set_prev_link(Node<T>* new_link)             { m_prev = new_link; }
+    T& get_data() { return m_val;}
+    const Node<T>* get_next_link( ) const { return m_next;}
+    Node<T>* get_next_link( )             { return m_next; }
+    //we need two for next and prev
+    const Node<T>* get_prev_link( ) const { return m_prev;}
+    Node<T>* get_prev_link( )             { return m_prev; }
     
-   };
-
-
-
-template<class T>
-void list_insert(Node<T>* left_ptr, const T& entry){
-//pre-condition: requires atleast one node in the node list.
-//post-malone: will attatch the node in between the prior node and the next node gauranteed!
-//             this is because we are getting the right node through the left node's link!
-Node<T>* right_ptr = left_ptr->get_next_link(); 
-Node<T>* n_node;
-n_node = new Node<T>(entry, right_ptr,left_ptr);
-left_ptr->set_next_link(n_node);
-right_ptr->set_prev_link(n_node);
-}
-
-template<class T>
-void list_remove(Node<T>* removed_ptr){
-//PRE-CONDITION: pass in the node you want to remove of the list!!!!!!
-	
-Node<T>* left_ptr = removed_ptr->get_prev_link();
-Node<T>* right_ptr = removed_ptr->get_prev_link();//left+right node is grabbed using current Node!!! 
-left_ptr->set_next_link(right_ptr);
-right_ptr->set_prev_link(left_ptr);
-delete removed_ptr;
-
-}
-
-template<class T>
-int list_count(Node<T>* head_ptr){
-//first test if its a single node
-if(head_ptr->is_singleton()) return 1;
-
-Node<T>* cursor_ptr = head_ptr;
-int count = 0;
-//DO loop GAURANTEES ITS EXECUTED ONCE. once the ball starts rolling then counting is fine
-do{
-cursor_ptr= cursor_ptr->get_next_link();
-count++;
-}while(cursor_ptr != head_ptr);
-
-}
-
-template<class T>
-void list_clear(Node<T>* cursor){
-	//give a pointer and delete everything that is connected to that noder
-	while(!(cursor->is_singleton())){
-	list_remove(cursor->get_next_link());
-	}
-	cursor = NULL;
-}
-
-template<class T>
-Node<T>* list_search(Node<T>* head_ptr, const typename Node<T>::value_type& target)
-{
-    Node<T> *cursor;
     
-    for (cursor = head_ptr; cursor != NULL; cursor = cursor->link( ))
-        if (target == cursor->data( ))
-            return cursor;
-    return NULL;
-}
+};
+//-------TOOLKIT NODE METHODS---------------------------
+
+    template<class T>
+    void list_insert(Node<T>* left_ptr, const T& entry){
+        //pre-condition: requires atleast one node in the node list.
+        //post-malone: will attatch the node in between the prior node and the next node gauranteed!
+        //             this is because we are getting the right node through the left node's link!
+        Node<T>* right_ptr = left_ptr->get_next_link();
+        Node<T>* n_node;
+        n_node = new Node<T>(entry, right_ptr,left_ptr);
+        left_ptr->set_next_link(n_node);
+        right_ptr->set_prev_link(n_node);
+    }
+
+    template<class T>
+    void list_remove(Node<T>* removed_ptr){
+        //PRE-CONDITION: pass in the node you want to remove of the list!!!!!!
+        
+        //set the left pointer to the node before the one you're about to delete
+        Node<T>* left_ptr = removed_ptr->get_prev_link();
+        //set the right pointer to the node after the one you're about to delete
+        Node<T>* right_ptr = removed_ptr->get_next_link();//left+right node is grabbed using current Node!!!
+        //set the next link of the left node (left of node that removeptr is pointing at) to node that right_ptr is pointing at
+        left_ptr->set_next_link(right_ptr);
+        //set the prev link of the right node (right of the node that removeptr is pointing at) to node that left_ptr is pointing at
+        right_ptr->set_prev_link(left_ptr);
+        //now the left and right node's links are no longer set to remove pointer's so the node can be deleted and the pointer can be set to NULL
+        delete removed_ptr;
+        removed_ptr = NULL;
+    }
 
 
+    template<class T>
+    Node<T>* list_search(Node<T>* head_ptr,const T& target)
+    {
+        Node<T>* curr;
+        curr=head_ptr;
+        do {
+            if (curr->get_data().num_ssn == target.num_ssn()) return curr;
+            curr = curr->get_next_link();
+        }while(curr != head_ptr);
+        return NULL;
+    }
+
+    template<class T>
+    void list_clear(Node<T>* cursor){
+        //give a pointer and delete everything that is connected to that noder
+        while(!(cursor->is_singleton())){
+        list_remove(cursor->get_next_link());
+        }
+        delete cursor;
+        cursor = NULL;
+    }
 
 
+//-------SORTED BAG HEADER---------------------------
 
    template<class T>
    class SortedBag {
@@ -126,21 +115,16 @@ Node<T>* list_search(Node<T>* head_ptr, const typename Node<T>::value_type& targ
      Node<T>* m_curr; // iterator's current position.
      
    };
-  //constructors
  
 
    template<class T>
-   SortedBag<T>::~SortedBag<T>(){
+   SortedBag<T>::~SortedBag<T>() {
    	list_remove(head_ptr);
   	head_ptr=0;
         m_data=0;	
    }
 
-
-
-
-
-	template<class T>
+   template<class T>
    SortedBag<T> operator+(const SortedBag<T>&, const SortedBag<T>&);
 
    template<class T>
@@ -152,7 +136,6 @@ Node<T>* list_search(Node<T>* head_ptr, const typename Node<T>::value_type& targ
 		head_ptr = m_data;//the head is auto the new node
 		++m_size;
 		//cout<<"inserted at the Head!!"<<endl;
-		
 		return;	
 	}
 	//node with new entry has been created but has no links
@@ -168,84 +151,114 @@ Node<T>* list_search(Node<T>* head_ptr, const typename Node<T>::value_type& targ
 		return;
 	}
 
-	m_data=head_ptr; //set cursor to head
-	do{	
-		if(m_data->get_data().num_ssn()>entry.num_ssn()){
-			list_insert(m_data->get_prev_link(),entry);
-			++m_size;
-			return;
-		} 
-		m_data=m_data->get_next_link();
-	}while(m_data!=head_ptr);
-	//if loop has finished that means entry is the last of the list
-	//cout<<"New tail & its student: "<<entry.num_ssn()<<endl;
-	list_insert(head_ptr->get_prev_link(),entry);
-		++m_size;
-		return;
-	
-}
+    template<class T>
+    SortedBag<T>::SortedBag(const SortedBag& Bag2) {
+        Bag2.begin();
+        do {
+        this->insert(Bag2.get());
+        ++Bag2;
+        } while(Bag2.m_data!=Bag2.head_ptr);
+    }
 
-//----------//
-template<class T>
-bool operator ==(SortedBag<T>& bag1,SortedBag<T>& bag2 )
-{
-    return (bag1 == bag2);
-    
-}
+    template<class T>
+    long SortedBag<T>::erase(const T& student) {
+        long count = 0;
+        if(m_size == 0) return 0;
+        Node<T>* remove;
+        remove = list_search(head_ptr, student);
+        while(remove != NULL) {
+            if(remove == head_ptr) {
+                head_ptr = head_ptr->get_next_link();
+            } else {
+                delete remove;
+                remove = list_search(head_ptr, student);
+                ++count;
+            }
+        }
+    }
 
 
-template<class T>
-bool SortedBag<T>::erase_one(const T& target)
-{
-    //make a node type pointer to target
-    Node<T> *target_ptr;
-    target_ptr = list_search(head_ptr, target);
-    if (target_ptr == NULL)
-        return false; // target isn't in the bag, so no work to do
-    target_ptr->set_data( head_ptr->data( ) );
-    list_head_remove(head_ptr);
-    --m_size;
-    return true;
-    
-}
-template<class T>
-long SortedBag<T>::erase(const T& target)
-{
-    int answer = 0;
-    //make a node type pointer to target
-    Node<T> *target_ptr;
-    target_ptr = list_search(head_ptr, target);
-    while (target_ptr != NULL)
+
+
+    template<class T>
+    bool operator ==(SortedBag<T>& bag1,SortedBag<T>& bag2 )
     {
-        // Each time that target_ptr is not NULL, we have another occurrence
-        // of target. We remove this target using the same technique that
-        // was used in erase_one.
-        target_ptr->set_data( head_ptr->data( ) );
-        target_ptr = target_ptr->link( );
-        target_ptr = list_search(target_ptr, target);
-        list_head_remove(head_ptr);
-        --m_size;
-        ++answer;
+        for(int i = 0; i<bag1.size(); i++) {
+            if(bag1.m_data->get_data().num_ssn() != bag2.m_data->get_data().num_ssn())
+            {
+                return false;
+            }
+            ++bag1;
+            ++bag2;
+        }
+        return true;
+        
     }
-    return answer;
-    
-}
-template<class T>
-long SortedBag<T>::count(const T& t) const
-{
-    int answer;
-    const Node<T> *cursor;
-    answer = 0;
-    cursor = head_ptr;
-    
-    do {
-        cursor = cursor->link( );
-        ++answer;
-    }
-    while(cursor != head_ptr);
-    return answer;
-}
 
+
+    template<class T>
+    void SortedBag<T>::operator +=(SortedBag& bag)
+    {
+        if(bag.size() == 0) {
+            return;
+        } else {
+            bag.begin();
+            for(int i=0; i < bag.size(); ++bag) {
+                this->insert(bag.get());
+            }
+        }
+        
+    }
+
+    template<class T>
+    void SortedBag<T>::operator =(const SortedBag<T>& bag2)
+    {
+        if(bag2.size() == 0) {
+            this->list_clear(head_ptr);
+            head_ptr=0;
+            m_data=0;
+            m_size = 0;
+            return;
+        } else {
+            this->list_clear(head_ptr);
+            bag2.begin();
+            for(int i=0; i < bag2.size(); ++bag2) {
+                this->insert(bag2.get());
+            }
+            m_size = bag2.size();
+        }
+    }
+
+
+    template<class T>
+    bool SortedBag<T>::erase_one(const T& target)
+    {
+        //make a node type pointer to target
+        Node<T> *target_ptr;
+        target_ptr = list_search(head_ptr,target);
+        if (target_ptr == NULL) return false; // target isn't in the bag, so no work
+        list_remove(target_ptr);
+        --m_size;
+        return true;
+        
+    }
+    template<class T>
+    long SortedBag<T>::count(const T& t) const
+    {
+        int answer;
+        const Node<T> *cursor;
+        answer = 0;
+        cursor = head_ptr;
+        
+        do {
+            cursor = cursor->link( );
+            ++answer;
+        }
+        while(cursor != head_ptr);
+        return answer;
+    }
+
+//-------------------------------------End of SortedBag functions
 
    int main(){
        srand(time(NULL));
@@ -277,8 +290,6 @@ long SortedBag<T>::count(const T& t) const
 	++list_2;	
 	
 	}
-
-
-
-
+       
    }
+
