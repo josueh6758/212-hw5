@@ -72,6 +72,30 @@ count++;
 
 }
 
+template<class T>
+void list_clear(Node<T>* cursor){
+	//give a pointer and delete everything that is connected to that noder
+	while(!(cursor->is_singleton())){
+	list_remove(cursor->get_next_link());
+	}
+	cursor = NULL;
+}
+
+template<class T>
+Node<T>* list_search(Node<T>* head_ptr, const typename Node<T>::value_type& target)
+{
+    Node<T> *cursor;
+    
+    for (cursor = head_ptr; cursor != NULL; cursor = cursor->link( ))
+        if (target == cursor->data( ))
+            return cursor;
+    return NULL;
+}
+
+
+
+
+
    template<class T>
    class SortedBag {
    public:
@@ -79,7 +103,7 @@ count++;
      SortedBag(const SortedBag&);
 
      void operator =(const SortedBag&);
-     //~SortedBag();
+     ~SortedBag();
 
      bool erase_one(const T&);
      long erase(const T&);
@@ -93,7 +117,7 @@ count++;
      void operator++(){m_data = m_data->get_next_link();}
      void operator--(){m_data = m_data->get_prev_link();}
 //     friend bool operator<(const Node<T> &,const Node<T> &);     						
-     T& get(){return m_data->get_data();};
+     T& get(){return m_data->get_data();}
    private:
      Node<T>* head_ptr; //will always point to the head
      Node<T>* m_data; // pointer to ring structure. This will be my "cursor"
@@ -102,16 +126,22 @@ count++;
      Node<T>* m_curr; // iterator's current position.
      
    };
-   template<class T>
-   SortedBag<T> operator+(const SortedBag<T>&, const SortedBag<T>&);
+  //constructors
+ 
 
-//Beggining OF CODE
-  template<class T>
-   SortedBag<T>::SortedBag(const SortedBag&){
-  //create a linked list copy of a linked list(COPY CONSTRUCTOR) 
-   
-   
+   template<class T>
+   SortedBag<T>::~SortedBag<T>(){
+   	list_remove(head_ptr);
+  	head_ptr=0;
+        m_data=0;	
    }
+
+
+
+
+
+	template<class T>
+   SortedBag<T> operator+(const SortedBag<T>&, const SortedBag<T>&);
 
    template<class T>
    void SortedBag<T>::insert(const T& entry){
@@ -157,52 +187,12 @@ count++;
 
 //----------//
 template<class T>
-Node<T>* list_search(Node<T>* head_ptr, const typename Node<T>::value_type& target)
-{
-    Node<T> *cursor;
-    
-    for (cursor = head_ptr; cursor != NULL; cursor = cursor->link( ))
-        if (target == cursor->data( ))
-            return cursor;
-    return NULL;
-}
-
-
-template<class T>
-size_t list_length(const typename SortedBag<T>::Node* head_ptr)
-{
-    const typename SortedBag<T>::Node *cursor;
-    size_t answer;
-    
-    answer = 0;
-    for (cursor = head_ptr; cursor != NULL; cursor = cursor->link( ))
-        ++answer;
-    
-    return answer;
-}
-
-
-template<class T>
 bool operator ==(SortedBag<T>& bag1,SortedBag<T>& bag2 )
 {
     return (bag1 == bag2);
     
 }
 
-template<class T>
-void SortedBag<T>::operator =(const SortedBag<T>& bag)
-{
-    SortedBag<T>x = bag;
-}
-
-/*template<class T>
-bool operator <(Node<T>& node1, Node<T>& node2){
-Notice!!!! i am not using pointers but actual nodes so use .get rather than
-	        ->get *
-	     	cout<<"in the comparison module i am comparing "<< node1.get_data().num_ssn() << "And "<<node2.get_data().num_ssn()<<endl<<endl;
-		return(node1.get_data().num_ssn() <node2.get_data().num_ssn);}
-
-*/
 
 template<class T>
 bool SortedBag<T>::erase_one(const T& target)
@@ -255,9 +245,6 @@ long SortedBag<T>::count(const T& t) const
     while(cursor != head_ptr);
     return answer;
 }
-
-
-
 
 
    int main(){
