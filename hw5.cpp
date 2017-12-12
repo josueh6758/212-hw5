@@ -89,9 +89,9 @@ struct Node {
    class SortedBag {
    public:
      SortedBag() : m_data(0), m_size(0), m_asc(true), m_curr(0) {}
-     SortedBag(const SortedBag&);
+     SortedBag(SortedBag&);
 
-     void operator =(const SortedBag&);
+     void operator =(SortedBag&);
      ~SortedBag();
 
      bool erase_one(const T&);
@@ -136,6 +136,7 @@ struct Node {
 		head_ptr = m_data;//the head is auto the new node
 		++m_size;
 		//cout<<"inserted at the Head!!"<<endl;
+		
 		return;	
 	}
 	//node with new entry has been created but has no links
@@ -150,10 +151,26 @@ struct Node {
 		++m_size;
 		return;
 	}
-   }
+
+	m_data=head_ptr; //set cursor to head
+	do{	
+		if(m_data->get_data().num_ssn()>entry.num_ssn()){
+			list_insert(m_data->get_prev_link(),entry);
+			++m_size;
+			return;
+		} 
+		m_data=m_data->get_next_link();
+	}while(m_data!=head_ptr);
+	//if loop has finished that means entry is the last of the list
+	//cout<<"New tail & its student: "<<entry.num_ssn()<<endl;
+	list_insert(head_ptr->get_prev_link(),entry);
+		++m_size;
+		return;
+	
+}
 
     template<class T>
-    SortedBag<T>::SortedBag(const SortedBag& Bag2) {
+    SortedBag<T>::SortedBag( SortedBag& Bag2) {
         Bag2.begin();
         do {
         this->insert(Bag2.get());
@@ -214,16 +231,17 @@ struct Node {
     }
 
     template<class T>
-    void SortedBag<T>::operator =(const SortedBag<T>& bag2)
+    void SortedBag<T>::operator =(SortedBag<T>& bag2)
     {
         if(bag2.size() == 0) {
-            this->list_clear(head_ptr);
+            
+	    list_clear(this->head_ptr);
             head_ptr=0;
             m_data=0;
             m_size = 0;
             return;
         } else {
-            this->list_clear(head_ptr);
+            list_clear(this->head_ptr);
             bag2.begin();
             for(int i=0; i < bag2.size(); ++bag2) {
                 this->insert(bag2.get());
@@ -267,12 +285,23 @@ struct Node {
        srand(time(NULL));
 
 	SortedBag<Student> linked_list;
-		for(int i = 0; i<200;++i){
+		for(int i = 0; i<5;++i){
 		Student entry;
-		//cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
+		cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
 		linked_list.insert(entry);	
 		}
-
-       
-   }
+	SortedBag<Student> l2;
+	l2=linked_list;
+	cout<<l2.size()<<endl;
+	/*linked_list.begin();
+	l2.begin();
+	cout<<"L1             L2 \n";
+	for(int x=0;x<linked_list.size();x++){
+	Student one;
+	one=linked_list.get();
+	cout<< one.string_ssn()<<" | "<<endl;
+	++linked_list;
+	}
+  */
+       	}
 
