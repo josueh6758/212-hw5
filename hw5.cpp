@@ -270,6 +270,7 @@ struct Node {
 		//cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
 		linked_list.insert(entry);	
 		}
+       SortedBag<Student> L2(linked_list);
 	
 	SortedBag<Student>   list_2;
 	linked_list.begin();
@@ -292,8 +293,7 @@ struct Node {
 	
 	}
        
-//    list_2.erase_one(head_ptr, student);
-//    linked_list.erase_one(head_ptr, student);
+
     
    }
 
