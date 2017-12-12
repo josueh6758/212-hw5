@@ -97,7 +97,7 @@ struct Node {
      bool erase_one(const T&);
      long erase(const T&);
      void insert(const T&);
-     void operator +=(const SortedBag&);
+     void operator +=( SortedBag&);
      long size() const { return m_size; }
      long count(const T&) const;
      // SIMPLE ITERATOR 
@@ -150,6 +150,7 @@ struct Node {
 		++m_size;
 		return;
 	}
+   }
 
     template<class T>
     SortedBag<T>::SortedBag(const SortedBag& Bag2) {
@@ -183,11 +184,13 @@ struct Node {
     template<class T>
     bool operator ==(SortedBag<T>& bag1,SortedBag<T>& bag2 )
     {
-        for(int i = 0; i<bag1.size(); i++) {
-            if(bag1.m_data->get_data().num_ssn() != bag2.m_data->get_data().num_ssn())
-            {
-                return false;
-            }
+	if(bag1.size() != bag2.size()) return false;
+	return((bag1.size()==0) && (bag2.size()==0));
+        bag1.begin();
+	bag2.begin();
+	    for(int i = 0; i<bag1.size(); i++) {
+            if(bag1.m_data->get_data().num_ssn() != bag2.m_data->get_data().num_ssn())return false;
+
             ++bag1;
             ++bag2;
         }
@@ -197,7 +200,7 @@ struct Node {
 
 
     template<class T>
-    void SortedBag<T>::operator +=(SortedBag& bag)
+    void SortedBag<T>::operator +=(SortedBag<T>& bag)
     {
         if(bag.size() == 0) {
             return;
@@ -269,27 +272,7 @@ struct Node {
 		//cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
 		linked_list.insert(entry);	
 		}
-	
-	SortedBag<Student>   list_2;
-	linked_list.begin();
-	for(int i=0; i<linked_list.size();i++){
-		list_2.insert(linked_list.get());
-		--linked_list;
-	}
-	
-	linked_list.begin();
-	list_2.begin();
-	cout<<"      L1                L2\n";
-	for(int x=0;x<linked_list.size();++x){
-	Student l1,l2;
-	l1=linked_list.get(); 
-	l2=list_2.get();
 
-	cout<<x+1<<": "<<l1.string_ssn()<< "| "<<l2.string_ssn()<<endl;
-	++linked_list;
-	++list_2;	
-	
-	}
        
    }
 
