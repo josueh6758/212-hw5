@@ -97,7 +97,7 @@ struct Node {
      bool erase_one(const T&);
      long erase(const T&);
      void insert(const T&);
-     void operator +=(const SortedBag&);
+     void operator +=(SortedBag&);
      long size() const { return m_size; }
      long count(const T&) const;
      // SIMPLE ITERATOR 
@@ -150,6 +150,7 @@ struct Node {
 		++m_size;
 		return;
 	}
+   }
 
     template<class T>
     SortedBag<T>::SortedBag(const SortedBag& Bag2) {
@@ -197,7 +198,7 @@ struct Node {
 
 
     template<class T>
-    void SortedBag<T>::operator +=(SortedBag& bag)
+    void SortedBag<T>::operator +=(SortedBag<T>& bag)
     {
         if(bag.size() == 0) {
             return;
@@ -264,7 +265,7 @@ struct Node {
        srand(time(NULL));
 
 	SortedBag<Student> linked_list;
-		for(int i = 0; i<200;++i){
+		for(int i = 0; i<10;++i){
 		Student entry;
 		//cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
 		linked_list.insert(entry);	
@@ -291,5 +292,8 @@ struct Node {
 	
 	}
        
+//    list_2.erase_one(head_ptr, student);
+//    linked_list.erase_one(head_ptr, student);
+    
    }
 
