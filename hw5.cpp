@@ -88,7 +88,7 @@ struct Node {
    template<class T>
    class SortedBag {
    public:
-     SortedBag() : m_data(0), m_size(0), m_asc(true), m_curr(0) {}
+     SortedBag();// : m_data(0), m_size(0), m_asc(true), m_curr(0) {}
      SortedBag(SortedBag&);
 
      void operator =(SortedBag&);
@@ -108,11 +108,11 @@ struct Node {
 //     friend bool operator<(const Node<T> &,const Node<T> &);     						
      T& get(){return m_data->get_data();}
    private:
-     Node<T>* head_ptr; //will always point to the head
-     Node<T>* m_data; // pointer to ring structure. This will be my "cursor"
-     long     m_size; // number of elements in the Bag. 
-     bool     m_asc;  // flag to indicate iteration in ascending order or not.
-     Node<T>* m_curr; // iterator's current position.
+     Node<T>* head_ptr=NULL; //will always point to the head
+     Node<T>* m_data=NULL; // pointer to ring structure. This will be my "cursor"
+     long     m_size=0; // number of elements in the Bag. 
+     bool     m_asc=false;  // flag to indicate iteration in ascending order or not.
+     Node<T>* m_curr=NULL; // iterator's current position.
      
    };
  
@@ -284,24 +284,9 @@ struct Node {
    int main(){
        srand(time(NULL));
 
-	SortedBag<Student> linked_list;
-		for(int i = 0; i<5;++i){
-		Student entry;
-		cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
-		linked_list.insert(entry);	
-		}
-	SortedBag<Student> l2;
-	l2=linked_list;
-	cout<<l2.size()<<endl;
-	/*linked_list.begin();
-	l2.begin();
-	cout<<"L1             L2 \n";
-	for(int x=0;x<linked_list.size();x++){
-	Student one;
-	one=linked_list.get();
-	cout<< one.string_ssn()<<" | "<<endl;
-	++linked_list;
-	}
-  */
+	SortedBag<Student> linked_list();
+
+
+
        	}
 
