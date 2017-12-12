@@ -92,7 +92,7 @@ public:
     
     void operator =(SortedBag&);
     ~SortedBag();
-    
+    friend bool operator ==(SortedBag&, SortedBag&);
     bool erase_one(const T&);
     long erase(const T&);
     void insert(const T&);
@@ -289,9 +289,19 @@ int main(){
         cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
         linked_list.insert(entry);
     }
-    SortedBag<Student> l2;
-    l2=linked_list;
-    cout<<l2.size()<<endl;
+    SortedBag<Student> list2 = linked_list;
+    list2.begin();
+    for(int i = 0; i<list2.size();++i){
+        cout<<"list2 "<<list2.get().string_ssn()<<endl;
+    }
+    if(linked_list == list2) {
+        cout << "true" <<endl;
+    } else {
+        cout << "false" << endl;
+    }
+//    SortedBag<Student> l2;
+//    l2=linked_list;
+//    cout<<l2.size()<<endl;
     /*linked_list.begin();
      l2.begin();
      cout<<"L1             L2 \n";
