@@ -69,14 +69,17 @@ struct Node {
 
     template<class T>
     void list_clear(Node<T>* cursor){
-        //give a pointer and delete everything that is connected to that noder
-     Node<T>* ref_ptr;
-      while(cursor!=NULL){
-      	ref_ptr = cursor->get_next_link();
-	list_remove(cursor);
-        cursor = ref_ptr;
-      }
-
-    }
+    //give a pointer and delete everything that is connected to that noder
+     if(cursor==0 || cursor == NULL){ 
+	     cout<<"list is already empty\n";
+	     return;}
+     
+	
+     while(!(cursor->is_singleton())){	
+	list_remove(cursor->get_next_link()); 
+     }
+	delete cursor;
+	return;
+}
 
 #endif

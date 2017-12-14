@@ -10,12 +10,12 @@ using namespace std;
    template<class T>
    class SortedBag {
    public:
-     SortedBag() : m_data(0), m_size(0), m_asc(true), m_curr(0) {}
+     SortedBag() : head_ptr(0), m_data(0), m_size(0), m_asc(true), m_curr(0) {}
      SortedBag(SortedBag&);
 
      void operator =(SortedBag&);
      ~SortedBag();
-
+     void display();
      bool erase_one(const T&);
      long erase(const T&);
      void insert(const T&);
@@ -31,33 +31,44 @@ using namespace std;
      T& get(){return m_data->get_data();}
    private:
      Node<T>* head_ptr; //will always point to the head
-     Node<T>* m_data; // pointer to ring structure. This will be my "cursor"
+     Node<T>* m_data;   // pointer to ring structure. This will be my "cursor"
      long     m_size=0; // number of elements in the Bag. 
-     bool     m_asc;  // flag to indicate iteration in ascending order or not.
-     Node<T>* m_curr; // iterator's current position.
+     bool     m_asc;    // flag to indicate iteration in ascending order or not.
+     Node<T>* m_curr;   // iterator's current position.
      
    };
  
-
-   template<class T>
-   SortedBag<T>::~SortedBag<T>() {
-   	list_clear(head_ptr);
-	m_size=0;	
+template<class T>
+SortedBag<T>::~SortedBag<T>() {
+   	cout<<"terminating the list!\n";
+	   list_clear(head_ptr);	
    }
 
-   template<class T>
-   SortedBag<T> operator+(const SortedBag<T>&, const SortedBag<T>&);
+template<class T>
+SortedBag<T> operator+(const SortedBag<T>&, const SortedBag<T>&);
 
-   template<class T>
-   void SortedBag<T>::insert(const T& entry){
+template<class T>
+void SortedBag<T>::display(){
+	if(!(head_ptr)){
+	cout<<"list is empty!\n";
+	return;
+	}
+	m_data = head_ptr;
+	do{
+	cout<<m_data.get_data().num_ssn()<<endl;
+	}while(m_data!=head_ptr);
+}
+
+
+
+template<class T>
+void SortedBag<T>::insert(const T& entry){
    	if(m_size==0){
 	//m_size isnt pointing to anything so we add the head
 		m_data = new Node<T>();
 		m_data-> set_data(entry);
 		head_ptr = m_data;//the head is auto the new node
-		++m_size;
-		//cout<<"inserted at the Head!!"<<endl;
-		
+		++m_size;	
 		return;	
 	}
 	//node with new entry has been created but has no links
@@ -65,8 +76,6 @@ using namespace std;
 	//now check if we need to update the head.
 	//if entry is smaller it will become new head(m_data) adjust the head_pt
 	if(entry.num_ssn()<head_ptr->get_data().num_ssn()){
-	//	cout<<"New Head & its student: "<<entry.num_ssn()<<endl;
-		// the head ptr will now point to the new entry
 		list_insert(head_ptr->get_prev_link(),entry);
 		head_ptr = head_ptr->get_prev_link();
 		++m_size;
@@ -90,8 +99,8 @@ using namespace std;
 	
 }
 
-    template<class T>
-    SortedBag<T>::SortedBag( SortedBag& Bag2) {
+template<class T>
+SortedBag<T>::SortedBag( SortedBag& Bag2) {
         Bag2.begin();
         do {
         this->insert(Bag2.get());
@@ -119,8 +128,8 @@ using namespace std;
 
 
 
-    template<class T>
-    bool operator ==(SortedBag<T>& bag1,SortedBag<T>& bag2 )
+template<class T>
+bool operator ==(SortedBag<T>& bag1,SortedBag<T>& bag2 )
     {
 	if(bag1.size() != bag2.size()) return false;
 	return((bag1.size()==0) && (bag2.size()==0));
@@ -137,8 +146,8 @@ using namespace std;
     }
 
 
-    template<class T>
-    void SortedBag<T>::operator +=(SortedBag<T>& bag)
+template<class T>
+void SortedBag<T>::operator +=(SortedBag<T>& bag)
     {
         if(bag.size() == 0) {
             return;
@@ -151,8 +160,8 @@ using namespace std;
         
     }
 
-    template<class T>
-    void SortedBag<T>::operator =(SortedBag<T>& bag2)
+template<class T>
+void SortedBag<T>::operator =(SortedBag<T>& bag2)
     {
         if(bag2.size() == 0) {
             
@@ -172,8 +181,8 @@ using namespace std;
     }
 
 
-    template<class T>
-    bool SortedBag<T>::erase_one(const T& target)
+template<class T>
+bool SortedBag<T>::erase_one(const T& target)
     {
         //make a node type pointer to target
         Node<T> *target_ptr;
@@ -184,8 +193,8 @@ using namespace std;
         return true;
         
     }
-    template<class T>
-    long SortedBag<T>::count(const T& t) const
+template<class T>
+long SortedBag<T>::count(const T& t) const
     {
         int answer;
         const Node<T> *cursor;
@@ -206,8 +215,10 @@ using namespace std;
        srand(time(NULL));
 
 	SortedBag<Student> l1;
-	SortedBag<Student> L2;
+	//for(int x=0;x<3;++x){
+	Student student;
+	l1.insert(student);
+	//}
 
-
-       	}
+}
 
