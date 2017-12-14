@@ -7,16 +7,21 @@
 using namespace std;
 
 int main(){
-    srand(time(NULL));
+    //srand(time(NULL));
     
     SortedBag<Student> linked_list;
-//    for(int i = 0; i<5;++i){
-//        Student entry;
-//        cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
-//        linked_list.insert(entry);
-//    }
+    for(int i = 0; i<5;++i){
+        Student entry;
+        //cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
+        linked_list.insert(entry);
+    }
+    linked_list.display();
 //    SortedBag<Student> list2 = linked_list;
 //    list2.begin();
+        for(int i = 0; i<linked_list.size();++i){
+           // cout<<"list2 "<<linked_list.get().string_ssn()<<endl;
+        }
+    
 //    for(int i = 0; i<list2.size();++i){
 //        cout<<"list2 "<<list2.get().string_ssn()<<endl;
 //    }

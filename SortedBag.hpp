@@ -15,7 +15,7 @@ using namespace std;
 template<class T>
 class SortedBag {
 public:
-    SortedBag() : m_data(0), m_size(0), m_asc(true), m_curr(0) {}
+    SortedBag() : head_ptr(0), m_data(0), m_size(0), m_asc(true), m_curr(0) {}
     SortedBag(SortedBag&);
     
     void operator =(SortedBag&);
@@ -25,6 +25,7 @@ public:
     void insert(const T&);
     long size() const { return m_size; }
     long count(const T&) const;
+    void display();
     // SIMPLE ITERATOR
     void begin(){m_data=head_ptr;}
     bool end()const {return(m_data->get_next_link()==head_ptr);}
@@ -213,7 +214,18 @@ void SortedBag<T>::operator =(SortedBag<T>& bag2)
     }
 }
 
-
+template<class T>
+void SortedBag<T>::display(){
+    if(!(head_ptr)){
+        cout<<"list is empty!\n";
+        return;
+    }
+    m_data = head_ptr;
+    do{
+        cout<<m_data->get_data().string_ssn()<<endl;
+        m_data = m_data->get_next_link();
+    }while(m_data!=head_ptr);
+}
 
 
 
