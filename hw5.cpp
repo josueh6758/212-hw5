@@ -49,13 +49,14 @@ SortedBag<T> operator+(const SortedBag<T>&, const SortedBag<T>&);
 
 template<class T>
 void SortedBag<T>::display(){
-	if(!(head_ptr)){
+	if(head_ptr==0 || head_ptr == NULL){
 	cout<<"list is empty!\n";
 	return;
 	}
 	m_data = head_ptr;
 	do{
-	cout<<m_data.get_data().num_ssn()<<endl;
+	cout<<m_data->get_data().string_ssn()<<endl;
+	m_data= m_data->get_next_link();
 	}while(m_data!=head_ptr);
 }
 
@@ -63,40 +64,44 @@ void SortedBag<T>::display(){
 
 template<class T>
 void SortedBag<T>::insert(const T& entry){
-   	if(m_size==0){
-	//m_size isnt pointing to anything so we add the head
-		m_data = new Node<T>();
-		m_data-> set_data(entry);
-		head_ptr = m_data;//the head is auto the new node
-		++m_size;	
-		return;	
-	}
-	//node with new entry has been created but has no links
-	/*******************************************************/
-	//now check if we need to update the head.
-	//if entry is smaller it will become new head(m_data) adjust the head_pt
-	if(entry.num_ssn()<head_ptr->get_data().num_ssn()){
-		list_insert(head_ptr->get_prev_link(),entry);
-		head_ptr = head_ptr->get_prev_link();
-		++m_size;
-		return;
-	}
-
-	m_data=head_ptr; //set cursor to head
-	do{	
-		if(m_data->get_data().num_ssn()>entry.num_ssn()){
-			list_insert(m_data->get_prev_link(),entry);
-			++m_size;
-			return;
-		} 
-		m_data=m_data->get_next_link();
-	}while(m_data!=head_ptr);
-	//if loop has finished that means entry is the last of the list
-	//cout<<"New tail & its student: "<<entry.num_ssn()<<endl;
-	list_insert(head_ptr->get_prev_link(),entry);
-		++m_size;
-		return;
-	
+    if(m_size==0){
+        //m_size isnt pointing to anything so we add the head
+        m_data = new Node<T>();
+        m_data-> set_data(entry);
+        head_ptr = m_data;//the head is auto the new node
+        ++m_size;
+        //cout<<"inserted at the Head!!"<<endl;
+        
+        return;
+    }
+    //node with new entry has been created but has no links
+    /*******************************************************/
+    //now check if we need to update the head.
+    //if entry is smaller it will become new head(m_data) adjust the head_pt
+    if(entry.num_ssn()<head_ptr->get_data().num_ssn()){
+        //    cout<<"New Head & its student: "<<entry.num_ssn()<<endl;
+        // the head ptr will now point to the new entry
+        list_insert(head_ptr->get_prev_link(),entry);
+        head_ptr = head_ptr->get_prev_link();
+        ++m_size;
+        return;
+    }
+    
+    m_data=head_ptr; //set cursor to head
+    do{
+        if(m_data->get_data().num_ssn()>entry.num_ssn()){
+            list_insert(m_data->get_prev_link(),entry);
+            ++m_size;
+            return;
+        }
+        m_data=m_data->get_next_link();
+    }while(m_data!=head_ptr);
+    //if loop has finished that means entry is the last of the list
+    //cout<<"New tail & its student: "<<entry.num_ssn()<<endl;
+    list_insert(head_ptr->get_prev_link(),entry);
+    ++m_size;
+    return;
+    
 }
 
 template<class T>
@@ -212,13 +217,10 @@ long SortedBag<T>::count(const T& t) const
 //-------------------------------------End of SortedBag functions
 
    int main(){
-       srand(time(NULL));
-
 	SortedBag<Student> l1;
-	//for(int x=0;x<3;++x){
-	Student student;
-	l1.insert(student);
-	//}
+	Student entry;
+	//l1.insert(entry);
 
-}
+   
+   }
 
