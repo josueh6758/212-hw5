@@ -26,7 +26,7 @@ public:
     void operator++(){m_data = m_data->get_next_link();}
     void operator--(){m_data = m_data->get_prev_link();}
     void operator +=( SortedBag&);
-    friend bool operator ==(SortedBag<T>&, SortedBag<T>&);
+    bool operator ==(SortedBag&);
     //friend bool operator<(const Node<T> &,const Node<T> &);
     T& get(){return m_data->get_data();}
 private:
@@ -159,19 +159,18 @@ SortedBag<T> operator+(const SortedBag<T>&, const SortedBag<T>&);
 
 
 template<class T>
-bool operator ==(SortedBag<T>& bag1,SortedBag<T>& bag2 )
+/*if == is member of your class and only want one variable then you MUST INCLUDE SCOPE OPERATOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1*/
+bool SortedBag<T>::operator ==(SortedBag<T>& bag2)
 {
-    if(bag1.size() != bag2.size()) return false;
-    return((bag1.size()==0) && (bag2.size()==0));
-    bag1.begin();
-    bag2.begin();
-    for(int i = 0; i<bag1.size(); i++) {
-        if(bag1.m_data->get_data().num_ssn() != bag2.m_data->get_data().num_ssn())return false;
-        
-        ++bag1;
-        ++bag2;
+    if(this->size() != bag2.size()) return false;
+    this->begin();
+    bag2.begin(); //set them to begining to start comparing 
+    for(int a=0; a < this->size(); a++){
+    	if(this->get().num_ssn() != bag2.get().num_ssn()) return false;
+    	m_data= m_data->get_next_link();//cant do the ++
+	++bag2;
     }
-    return true;
+	return true;
     
 }
 
