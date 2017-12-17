@@ -1,2 +1,2 @@
 all:
-	g++ -std=c++11 hw5.cpp -o beta
+	g++ -std=c++11 hw5.cpp -o beta && ./beta
