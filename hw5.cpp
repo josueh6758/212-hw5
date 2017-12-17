@@ -8,20 +8,44 @@ using namespace std;
 
 int main(){
     //srand(time(NULL));
-    
-    SortedBag<Student> linked_list;
-    for(int i = 0; i<5;++i){
-        Student entry;
+cout<<"TASK 1:\n";    
+SortedBag<Student> list_one;
+for(int i = 0; i<5;++i){
+	Student entry;
         //cout<<"created a new student with SSID OF "<<entry.string_ssn()<<endl;
-        linked_list.insert(entry);
+        list_one.insert(entry);
     }
-    Student two;
-    cout<<"Student 2:"<< two.string_ssn()<<endl;
-    linked_list.insert(two);
-    linked_list.display();
-    cout<< linked_list.erase(two)<<endl;
-    linked_list.display();
-	
+SortedBag<Student> list_two;
+list_one.begin();
+for(int x=0;x<list_one.size();x++){
+
+	list_two.insert(list_one.get());
+	++list_one;
+}
+if(list_one==list_two){ cout<<"they are the same\n";}
+else{cout<<"they are not the same\n";}
+cout<<"L1:\n";
+list_one.display();
+cout<<"L2:\n";
+list_two.display();
+
+
+SortedBag<Student> list_three;
+list_one.begin();
+for(int x=0;x<list_one.size();x++){
+
+	list_three.insert(list_one.get());
+	--list_one;
+
+}
+if(list_one==list_three){ cout<<"they are the same\n";}
+else{cout<<"they are not the same\n";}
+cout<<"L1:\n";
+list_one.display();
+cout<<"L3:\n";
+list_three.display();
+
+// end of task 1;
 }
 
 
