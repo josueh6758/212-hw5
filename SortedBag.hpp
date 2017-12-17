@@ -1,10 +1,3 @@
-//
-//  SortedBag.hpp
-//  
-//
-//  Created by Yukkee chang on 12/12/17.
-//
-
 #ifndef SortedBag_hpp
 #define SortedBag_hpp
 #include "Node.hpp"
@@ -33,7 +26,7 @@ public:
     void operator++(){m_data = m_data->get_next_link();}
     void operator--(){m_data = m_data->get_prev_link();}
     void operator +=( SortedBag&);
-    friend bool operator ==(SortedBag&, SortedBag&);
+    friend bool operator ==(SortedBag<T>&, SortedBag<T>&);
     //friend bool operator<(const Node<T> &,const Node<T> &);
     T& get(){return m_data->get_data();}
 private:
@@ -111,18 +104,22 @@ void SortedBag<T>::insert(const T& entry){
 template<class T>
 long SortedBag<T>::erase(const T& student) {
     long count = 0;
-    if(m_size == 0) return 0;
-    Node<T>* remove;
-    remove = list_search(head_ptr, student);
-    while(remove != NULL) {
-        if(remove == head_ptr) {
-            head_ptr = head_ptr->get_next_link();
-        } else {
-            delete remove;
-            remove = list_search(head_ptr, student);
-            ++count;
-        }
+    if(m_size == 0){cout<<"Theres nothing to remove!\n"; return 0;}
+    if(!(list_search(head_ptr,student))){
+    	cout<<"that student does not exist!\n"<<endl;
+    	return count;
     }
+	Node<T>* cursor=head_ptr;
+	do{
+		
+	       if(cursor->get_data().num_ssn() == student.num_ssn()){
+		cursor= cursor->get_next_link();
+		list_remove(cursor->get_prev_link());
+	        ++count;
+	       }
+	       cursor = cursor->get_next_link();
+	}while(cursor != head_ptr);
+	return count;
 }
 
 
@@ -156,11 +153,10 @@ long SortedBag<T>::count(const T& t) const
 }
 
 
-
-
 //--------------OVERLOADED OPERATORS------------------
 template<class T>
 SortedBag<T> operator+(const SortedBag<T>&, const SortedBag<T>&);
+
 
 template<class T>
 bool operator ==(SortedBag<T>& bag1,SortedBag<T>& bag2 )
@@ -225,6 +221,11 @@ void SortedBag<T>::display(){
         cout<<m_data->get_data().string_ssn()<<endl;
         m_data = m_data->get_next_link();
     }while(m_data!=head_ptr);
+	
+	
+
+
+
 }
 
 
