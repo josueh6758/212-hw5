@@ -66,18 +66,19 @@ list_one.display();
 cout<<endl;
 cout<<"L2:\n";
 list_two.display();
-cout<<endl;
+cout<<endl<<"cycle through l2 and delete them from l1\n";
 
 list_two.begin();
 for(int x=0;x<list_two.size();++x){
-	cout<<"L1:\n";
+	cout<<"\nL1:\n";
 	list_one.display();
 	cout<<"attempting to delete: "<< list_two.get().num_ssn()<<endl;
 	list_one.erase(list_two.get());
-	list_one.display();
-	cout<<endl;
+
 	++list_two;
 }
+cout<<"\nL1:\n";
+list_one.display();
 
 
 //end of task 2
