@@ -104,18 +104,32 @@ void SortedBag<T>::insert(const T& entry){
 template<class T>
 long SortedBag<T>::erase(const T& student) {
     long count = 0;
+    
     if(m_size == 0){cout<<"Theres nothing to remove!\n"; return 0;}
     if(!(list_search(head_ptr,student))){
     	cout<<"that student does not exist!\n"<<endl;
     	return count;
     }
+    
+
 	Node<T>* cursor=head_ptr;
 	do{
-		
+		if(cursor->get_data().num_ssn() == student.num_ssn() && m_size==1){
+			list_remove(head_ptr);
+			head_ptr=0;
+			++count;
+			--m_size;
+			break;
+		}
+		//case if the head ptr gets removed, update it!
 	       if(cursor->get_data().num_ssn() == student.num_ssn()){
-		cursor= cursor->get_next_link();
+		if(cursor->get_data().num_ssn() == head_ptr->get_data().num_ssn()){
+		 head_ptr = head_ptr->get_next_link();
+		}
+		cursor= cursor->get_next_link();	
 		list_remove(cursor->get_prev_link());
 	        ++count;
+		--m_size;
 	       }
 	       cursor = cursor->get_next_link();
 	}while(cursor != head_ptr);
