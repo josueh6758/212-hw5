@@ -46,6 +46,44 @@ cout<<"L3:\n";
 list_three.display();
 
 // end of task 1;
+cout<<"\nTask 2:\ndeleting first and last student of L1 and L2\n\n";
+
+list_one.begin();
+list_two.begin();
+Student s_beg;
+s_beg=list_one.get();
+--list_one;
+Student s_end;
+s_end=list_one.get();
+if(list_one.erase(s_beg) && list_one.erase(s_end)){
+	cout<<"deleted the head and tail of l1!\n";}
+else{ cout <<"did not delete the head and tail of l1\n";}
+if(list_two.erase(s_beg) && list_two.erase(s_end)){
+	cout<<"deleted the head and tail of l2!\n";}
+else{ cout <<"did not delete the head and tail of l2!\n";}
+cout<<"L1:\n";
+list_one.display();
+cout<<endl;
+cout<<"L2:\n";
+list_two.display();
+cout<<endl;
+
+list_two.begin();
+for(int x=0;x<list_two.size();++x){
+	cout<<"L1:\n";
+	list_one.display();
+	cout<<"attempting to delete: "<< list_two.get().num_ssn()<<endl;
+	list_one.erase(list_two.get());
+	list_one.display();
+	cout<<endl;
+	++list_two;
+}
+
+
+//end of task 2
+cout<<"\nTask 3:\ndelete random spots and compare\n";
+
+
 }
 
 
